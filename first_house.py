@@ -9,12 +9,13 @@ driver = webdriver.Firefox()
 
 page = 1 #page number on immovlan, we start at 1
 max_page = 50
+provinces = ["hainaut", "antwerp", "east-flanders", "west-flanders", "brabant-wallon", "vlaams-brabant", "liege", "limburg", "luxembourg", "namur", "brussels"]
 driver.get(F"https://immovlan.be/en/real-estate?transactiontypes=for-rent,for-sale,in-public-sale,to-share&propertytypes=house,apartment&page={page}&noindex=1") # opening the first page containing the list of all houses and appartment
 
 time.sleep(5)
 # click cookies
 driver.find_element(By.XPATH, "//*[@id='didomi-notice-agree-button']").click()
-
+"""
 properties = []
 while page <= max_page:
     driver.get(F"https://immovlan.be/en/real-estate?transactiontypes=for-rent,for-sale,in-public-sale,to-share&propertytypes=house,apartment&page={page}&noindex=1") # opening the first page containing the list of all houses and appartment
@@ -24,7 +25,19 @@ while page <= max_page:
 
     time.sleep(5)
     page += 1
+driver.close()
+"""
+properties = []
+for province in provinces:
+    print(province)
+    while page <= max_page:
+        driver.get(F"https://immovlan.be/en/real-estate?propertytypes=house,apartment&propertysubtypes=residence,villa,bungalow,chalet,cottage,master-house,mansion,mixed-building,apartment,ground-floor,penthouse,duplex,triplex,studio,loft&provinces={province}&page={page}") # opening the first page containing the list of all houses and appartment per province
+        print(f"province {province} page {page}")
+        for article in driver.find_elements(By.CLASS_NAME,"list-view-item"):
+            properties.append(article.get_attribute('data-url'))
 
+        time.sleep(3)
+        page += 1
 driver.close()
 
 with open("url_list.txt", "w") as f:
@@ -38,4 +51,7 @@ print(properties)
 #/html/body/div[1]/div[4]/div[3]/div/div[2]/div[2]/section/article[1]
 
 #/html/body/div[1]/div[4]/div[3]/div/div[2]/div[2]/section/article[2]
+
+#https://immovlan.be/en/real-estate?provinces=east-flanders,west-flanders,brabant-wallon,vlaams-brabant,liege,limburg,luxembourg,namur,brussels
+
 
