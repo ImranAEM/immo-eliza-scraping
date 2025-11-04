@@ -22,19 +22,23 @@ def get_soup(url:str) -> BeautifulSoup:
     return soup
 
 def get_info(soup: BeautifulSoup) -> dict:
-    property_info ={"id" : soup.find(class_="vlancode").text, "property type" : soup.find("h1").text}
-    print(property_info['property type'])
+    property_info ={"id" : re.sub(r"/\n","",soup.find(class_="vlancode").text.strip()), "property type" : re.sub(r"/\n","",soup.find("h1").text.strip()), "price" : re.sub(r"/\n","",soup.find(class_="detail__header_price_data").text.strip())}
     for info_box in soup.find(class_="general-info-wrapper").find_all(class_="data-row-wrapper"):
         for info_name, info in zip(info_box.find_all("h4"), info_box.find_all("p")):
-            property_info[info_name.text] = info.text
-
+            property_info[re.sub(r"/\n","",info_name.text.strip())] = re.sub(r"/\n","", info.text.strip())#removes \n
     return property_info
+
+def get_info_project(soup: BeautifulSoup) -> dict:
+    pass
 
 def all_properties_info(properties: list[str]) -> dict:
     properties_info = {}
     for property_url in properties:
-        print(property_url)
-        info = get_info(get_soup(property_url))
+        #print(property_url)
+        if re.match(r"project", property_url): 
+            info = get_info_project(get_soup(property_url))
+        else:
+            info = get_info(get_soup(property_url))
         properties_info[info["id"]] = info
 
     return properties_info
