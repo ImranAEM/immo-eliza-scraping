@@ -3,26 +3,39 @@ from bs4 import BeautifulSoup
 import time
 from selenium.webdriver.common.by import By
 import re
+import json
 
 
-def get_soup(url:str) -> BeautifulSoup:
+def get_soup(url:str) -> tuple[BeautifulSoup,str]:
     # initiate driver and getting the page
     driver = webdriver.Firefox()
     driver.get(url) # opening the property's page
 
     # click cookies
-    time.sleep(5)
+    time.sleep(2)
     driver.find_element(By.XPATH, "//*[@id='didomi-notice-agree-button']").click()
 
     # get html
     soup = BeautifulSoup(driver.page_source, "html.parser")
+    #get json for the meta data
+    json_string = driver.execute_script(f"return window.localStorage.getItem('__property_details__');")
 
     driver.quit()
 
-    return soup
+    return soup, json_string
 
-def get_info(soup: BeautifulSoup) -> dict:
-    property_info ={"id" : re.sub(r"/\n","",soup.find(class_="vlancode").text.strip()), "property type" : re.sub(r"/\n","",soup.find("h1").text.strip()), "price" : re.sub(r"/\n","",soup.find(class_="detail__header_price_data").text.strip())}
+def get_info(my_tuple : tuple[BeautifulSoup, str]) -> dict:
+    soup = my_tuple[0]
+    json_info = json.loads(my_tuple[1])
+    property_info ={
+        "Id" : json_info["reference"], 
+        "Property type" : json_info["propertyType"], 
+        "Price" : json_info["price"], 
+        "Locality" : json_info["city"],
+        "Postcode" : json_info["zipCode"],
+        "Subtype" : json_info["propertySubType"],
+        "Sale type" : json_info["transactionType"]
+        }
     for info_box in soup.find(class_="general-info-wrapper").find_all(class_="data-row-wrapper"):
         for info_name, info in zip(info_box.find_all("h4"), info_box.find_all("p")):
             property_info[re.sub(r"/\n","",info_name.text.strip())] = re.sub(r"/\n","", info.text.strip())#removes \n
