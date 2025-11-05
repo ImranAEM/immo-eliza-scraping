@@ -4,7 +4,9 @@ import csv
 def property_data_output(property_info: dict) -> dict:
     #output = {"id" : property_info["id"], "locality" : property_info['property type'], "postcode" :  property_info[], "price" :  int(''.join(filter(str.isdigit, property_info['price']))), "type" :  property_info[], "subtype" :  property_info[], "sale_type" :  property_info[], "nb_rooms" :  int(property_info['Number of bedrooms']), "area" :  property_info[], "equipped_kitchen" :  property_info['Kitchen equipment'], "furnished" :  property_info[], "open_fire" :  property_info[], "terrace" :  property_info[], "garden" :  property_info[], "facades":  property_info[], "pool" :  property_info[], "state" : property_info['State of the property']}
     
-    def _to_bool(text: str):
+    def _to_bool(text: str | None):
+        if text is None:
+            return None
         t = (text or "").strip().lower()
         return True if t == "yes" else False if t == "no" else text
 
@@ -15,9 +17,11 @@ def property_data_output(property_info: dict) -> dict:
     def _money_to_int(text: str):
         digits = re.sub(r"\D", "", text or "")
         return int(digits) if digits else None
-    
+        
+    print(property_info.get(_to_bool('Furnished'),None))
+    print(property_info.get('Furnished'),None)
     output = {
-    "Property ID" : property_info["Id"],
+    "Property ID" : property_info['Id'],
     "Locality name" : property_info['Locality'],
     "Postal code" :  property_info['Postcode'],
     "Price" :  float(property_info['Price']), 
@@ -27,12 +31,12 @@ def property_data_output(property_info: dict) -> dict:
     "Number of rooms" :  int(property_info['Number of bedrooms']), 
     "Living area" : re.sub(r"m²" , "",property_info['Livable surface']), #int(''.join(filter(str.isdigit, property_info['Livable surface']))), 
     "Equipped kitchen" : 1 if re.search(r"equipped", property_info['Kitchen equipment']) else 0, 
-    "Furnished" :  _to_bool(property_info['Furnished']), 
+    "Furnished" :  property_info.get(_to_bool('Furnished'),None),
     "Open fire" :  _to_bool(property_info['Fireplace']), 
-    "Terrace" :  0 if property_info['Terrace'] == "No" else _money_to_int(property_info['Surface terrace']), 
-    "Garden" :  0 if property_info['Garden'] == "No" else _money_to_int(['Surface garden']), 
+    # "Terrace" :  0 if property_info['Terrace'] == "No" else _money_to_int(property_info['Surface terrace']), 
+    # "Garden" :  0 if property_info['Garden'] == "No" else _money_to_int(['Surface garden']), 
     "Number of facades":  int(property_info['Number of facades']), 
-    "Swimming pool" :  _to_bool(property_info['Swimming pool']), 
+    "Swimming pool" :  _to_bool(property_info.get('Swimming pool', None)), #Heloise will check if this is correct
     "State of building" : property_info['State of the property']
     }
 
@@ -40,14 +44,14 @@ def property_data_output(property_info: dict) -> dict:
 
 
 
-def all_properties_data_output(all_properties_info: dict) -> list[dict]:
-    for property_id in all_properties_info:
-        output.append(property_data_output(all_properties_info[property_id]))
-    return output
+# def all_properties_data_output(all_properties_info: dict) -> list[dict]:
+#     for property_id in all_properties_info:
+#         output.append(property_data_output(all_properties_info[property_id]))
+#     return output
 
-#
-    with open("data.csv", "a") as f:
-        pass
+# #
+#     with open("data.csv", "a") as f:
+#         pass
 
 def to_csv(to_write: dict):
     titles = [
