@@ -35,17 +35,6 @@ def get_info(my_tuple : tuple[BeautifulSoup, str]) -> dict:
 
         print(f"Error : {e} in url {my_tuple[1]}")
         return 
-    """
-    property_info ={
-        "Id" : json_info["reference"], 
-        "Property type" : json_info["propertyType"], 
-        "Price" : json_info["price"], 
-        "Locality" : json_info["city"],
-        "Postcode" : json_info["zipCode"],
-        "Subtype" : json_info["propertySubType"],
-        "Sale type" : json_info["transactionType"]
-        }
-        """
     property_info ={
         "Id" : json_info["reference"] if json_info.get("reference") else None, 
         "Property type" : json_info["propertyType"] if json_info.get("propertyType") else None, 
@@ -61,80 +50,12 @@ def get_info(my_tuple : tuple[BeautifulSoup, str]) -> dict:
             property_info[re.sub(r"/\n","",info_name.text.strip())] = re.sub(r"/\n","", info.text.strip())#removes \n
     return property_info
 
-def get_info_project(soup: BeautifulSoup) -> dict:
-    pass
-"""
-def get_info_project(my_tuple : tuple[BeautifulSoup, str]) -> dict:
-
-    json_info = json.loads(my_tuple[1])
-    print(json_info)
-
-    soup = my_tuple[0]
-    
-
-    info_project = {}
-
-    # TYPE OF PROPERTY
-    title = soup.find("h1").contents[0]
-    property_type = title.text.strip() if title else None
-    #print(property_type)
-
-    # ADDRESS
-
-    title_section = driver.find_element(By.CLASS_NAME, "detail__header_address")
-    address_section = title_section.find_element(By.CLASS_NAME, "d-none.d-md-block")
-
-    spans = address_section.find_elements(By.TAG_NAME, "span")
-    address = " ".join([span.text for span in spans])
-
-
-
-    
-    section = soup.find("div", class_="section-container py-2 mt-lg-2")
-    highlights = section.find_all("div", class_="property-highlight")
-
-    
-    # Amount of the rooms
-    for room in highlights:
-        if "Bedroom" in room.text:   
-            strong_tag = room.find("strong")
-            if strong_tag:
-                num_room = strong_tag.text  
-
-    
-    # The prize of the project
-    for amount in highlights:
-        if "€" in amount.text:
-            strong_tag = amount.find("strong")
-            price = strong_tag.text
-
-
-    # The space of the project in m²
-
-    for area in highlights:
-        if "m²" in area.text:   
-            strong_tag = area.find("strong")
-            if strong_tag:
-                area_m = strong_tag.text  
-
-
-    #info_project["Property type"] = property_type
-    #info_project["Address"] = address
-    info_project["Number of bedrooms"] = num_room
-    info_project["Livable surface"] = area_m
-    info_project["Price"] = price.replace('\u202f', ' ').strip()
-
-
-    return info_project
-"""
-
 def all_properties_info(property_urls: list[str]) -> list[dict]:
     all_properties_info = list[dict]()
     to_csv_titles() # write the titles to the csv file
     for property_url in property_urls:
         print(property_url)
         if re.search(r"project", property_url): 
-            #info = get_info_project(get_soup(property_url))
             pass
         else:
             info = get_info(get_soup(property_url))
@@ -144,10 +65,7 @@ def all_properties_info(property_urls: list[str]) -> list[dict]:
                 to_csv(cleaned_info)
             else:
                 print(f"Error : {cleaned_info} in url {property_url}")
-        #properties_info[info["Id"]] = info
-
     return all_properties_info
-
 
 def to_csv_titles():
     titles = [
@@ -186,9 +104,7 @@ def run_over_all_url_properties_from_csv():
         all_urls = [line.strip() for line in file if line.strip()]
     print(len(all_urls))
 
-    properties = all_properties_info(all_urls)
+    properties = all_properties_info(all_urls[3740:7480])
     print(len(properties))
-
-
 
 run_over_all_url_properties_from_csv()

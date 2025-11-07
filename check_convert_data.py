@@ -2,7 +2,6 @@ import re
 import csv
 
 def clean_property_data_output(property_info: dict) -> dict:
-    #output = {"id" : property_info["id"], "locality" : property_info['property type'], "postcode" :  property_info[], "price" :  int(''.join(filter(str.isdigit, property_info['price']))), "type" :  property_info[], "subtype" :  property_info[], "sale_type" :  property_info[], "nb_rooms" :  int(property_info['Number of bedrooms']), "area" :  property_info[], "equipped_kitchen" :  property_info['Kitchen equipment'], "furnished" :  property_info[], "open_fire" :  property_info[], "terrace" :  property_info[], "garden" :  property_info[], "facades":  property_info[], "pool" :  property_info[], "state" : property_info['State of the property']}
     def _to_bool(text: str | None):
         if text is None:
             return None

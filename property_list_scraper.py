@@ -35,7 +35,6 @@ def get_urls(provinces: list):
             driver.get(F"https://immovlan.be/en/real-estate?propertytypes=house,apartment&propertysubtypes=residence,villa,bungalow,chalet,cottage,master-house,mansion,mixed-building,apartment,ground-floor,penthouse,duplex,triplex,studio,loft&provinces={province}&page={page}") # opening the first page containing the list of all houses and appartment per province
             print(f"province {province} page {page}")
             for article in driver.find_elements(By.CLASS_NAME,"list-view-item"):
-                #properties.append(article.get_attribute('data-url'))
                 with open("url_list.txt", "a") as f:
                     f.write(f"{article.get_attribute('data-url')}\n")
 
