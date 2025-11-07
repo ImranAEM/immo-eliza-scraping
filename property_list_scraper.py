@@ -6,11 +6,12 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
 
-page = 1 #page number on immovlan, we start at 1
-max_page = 50
-provinces = ["hainaut", "antwerp", "east-flanders", "west-flanders", "brabant-wallon", "vlaams-brabant", "liege", "limburg", "luxembourg", "namur", "brussels"]
 
 def get_urls(provinces: list):
+    page = 1 #page number on immovlan, we start at 1
+    max_page = 50
+    provinces = ["hainaut", "antwerp", "east-flanders", "west-flanders", "brabant-wallon", "vlaams-brabant", "liege", "limburg", "luxembourg", "namur", "brussels"]
+
     """
     Loops through each province in the list, navigates pages of property listings on immovlan.be,
     extracts property URLs from each page, and writes them to a file ("url_list.txt").
