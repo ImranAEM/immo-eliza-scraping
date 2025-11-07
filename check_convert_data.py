@@ -22,27 +22,24 @@ def clean_property_data_output(property_info: dict) -> dict:
         return int(digits) if digits else None
     
     output = {
-        "Property ID" : property_info.get('Id', None),
-        "Locality name" : property_info.get('Locality', None),
-        "Postal code" :  property_info.get('Postcode', None),
-        "Price" :  float(property_info.get('Price', 0)) if property_info.get('Price', None) is not None else None,
-        "Type of property" :  property_info.get('Property type', None),
-        "Subtype of property" :  property_info.get('Subtype', None),
-        "Type of sale" :  property_info.get('Sale type', None),
-        "Number of rooms" :  int(property_info.get('Number of bedrooms', 0)) if property_info.get('Number of bedrooms', None) is not None else None,
-        "Living area" : re.sub(r"m²" , "",property_info.get('Livable surface', None)), 
-        "Equipped kitchen" : 1 if property_info.get('Kitchen equipment', "").strip().lower() == "equipped" else 0,
-        "Furnished" :  _to_bool(property_info.get('Furnished',None)),
-        "Open fire" :  _to_bool(property_info.get('Fireplace', None)), 
-        "Terrace" : _to_bool(property_info.get('Terrace', None)),
-        "Garden" :  _to_bool(property_info.get('Garden', None)), 
-        # "Terrace" :  0 if property_info['Terrace'] == "No" else _money_to_int(property_info['Surface terrace']), 
-        # "Garden" :  0 if property_info['Garden'] == "No" else _money_to_int(['Surface garden']), 
-        "Number of facades":  _to_int(property_info.get('Number of facades', None)),
-        "Swimming pool" :  _to_bool(property_info.get('Swimming pool', None)), #Heloise will check if this is correct
-        "State of building" : property_info.get('State of the property', None)
+        "Property ID" : property_info["Id"] if property_info.get('Id') else None,
+        "Locality name" : property_info['Locality'] if property_info.get('Locality') else None,
+        "Postal code" :  property_info['Postcode'] if property_info.get('Postcode') else None,
+        "Price" :  property_info['Price'] if property_info.get('Price') else None, 
+        "Type of property" :  property_info['Property type'] if property_info.get('Property type') else None, 
+        "Subtype of property" :  property_info['Subtype'] if property_info.get('Subtype') else None, 
+        "Type of sale" :  property_info['Sale type'] if property_info.get('Sale type') else None, 
+        "Number of rooms" :  int(property_info['Number of bedrooms']) if property_info.get('Number of bedrooms') else None, 
+        "Living area" : re.sub(r"m²" , "",property_info['Livable surface']) if property_info.get('Livable surface') else None,
+        "Equipped kitchen" : (1 if re.search(r"equipped", property_info['Kitchen equipment']) else 0) if property_info.get('Kitchen equipment') else None,
+        "Furnished" : _to_bool(property_info['Furnished']) if property_info.get('Furnished') else None,
+        "Open fire" : _to_bool(property_info['Fireplace']) if property_info.get('Fireplace') else None, 
+        "Terrace" : (property_info['Surface terrace'] if property_info.get('Surface terrace') else _to_bool(property_info['Terrace']) if property_info.get('Terrace') else None),
+        "Garden" : (property_info['Surface garden'] if property_info.get('Surface garden') else _to_bool(property_info['Garden']) if property_info.get('Garden') else None), 
+        "Number of facades": int(property_info['Number of facades']) if property_info.get('Number of facades') else None, 
+        "Swimming pool" :  _to_bool(property_info['Swimming pool']) if property_info.get('Swimming pool') else None, 
+        "State of building" : property_info['State of the property'] if property_info.get('State of the property') else None
     }
-
     return output
 
 

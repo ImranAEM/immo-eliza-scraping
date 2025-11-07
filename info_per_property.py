@@ -128,22 +128,19 @@ def get_info_project(my_tuple : tuple[BeautifulSoup, str]) -> dict:
     return info_project
 """
 
-def all_properties_info(properties: list[str]) -> list[dict]:
+def all_properties_info(property_urls: list[str]) -> list[dict]:
     all_properties_info = list[dict]()
     to_csv_titles() # write the titles to the csv file
-    for property_url in properties:
+    for property_url in property_urls:
         print(property_url)
         if re.search(r"project", property_url): 
             #info = get_info_project(get_soup(property_url))
             pass
         else:
             info = get_info(get_soup(property_url))
-            print("error with info", property_url)
-                
-            cleaned_info = clean_property_data_output()))
+            cleaned_info = clean_property_data_output(info)
             if cleaned_info is not None:
                 all_properties_info.append(cleaned_info)
-                print(cleaned_info.values())
                 to_csv(cleaned_info)
             else:
                 print(f"Error : {cleaned_info} in url {property_url}")
@@ -172,16 +169,14 @@ def to_csv_titles():
         "Swimming pool", 
         "State of building"
     ]
-    with open("data.csv", "w", newline='') as f:
+    with open("data.csv", "a", newline='') as f:
         output = csv.writer(f)
         output.writerow(titles)
 
 def to_csv(to_write: dict):   
-    with open("data.csv", "a") as f:
+    with open("data.csv", "a",encoding='utf-8', newline='') as f:
         output = csv.writer(f)
         output.writerow(to_write.values())
-        #for d in l:
-        # output.writerow(list(to_write.values()))
 
 
 def run_over_all_url_properties_from_csv():
