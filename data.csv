@@ -1,8 +1,0 @@
-Property ID,Locality name,Postal code,Price,Type of property,Subtype of property,Type of sale,Number of rooms,Living area,Equipped kitchen,Furnished,Open fire,Terrace,Garden,Number of facades,Swimming pool,State of building
-VWD15538,Seneffe,7180,410000.0,House,Villa,Sale,4,175 ,0,,False,True,True,4,False,Normal
-RBU63284,Hennuy&#xE8;res,7090,750000.0,House,House,Sale,4,550 ,0,False,,True,True,4,,Normal
-VBD47289,Loverval,6280,1600.0,Appartment,Flat,Rent,2,124 ,0,True,,True,True,3,,Excellent
-RBU62463,Fl&#xE9;nu,7012,920.0,House,House,Rent,3,161 ,0,False,,True,True,3,,Normal
-VBD47252,La Louvi&#xE8;re,7100,175000.0,Appartment,Flat,Sale,2,76 ,0,False,,True,False,2,False,
-VBD47231,Mont-sur-Marchienne,6032,990.0,House,House,Rent,2,112 ,0,False,,True,True,,,Normal
-RBU62400,Solre-sur-Sambre,6560,80000.0,House,House,Sale,3,235 ,0,False,,True,False,3,,To be renovated
