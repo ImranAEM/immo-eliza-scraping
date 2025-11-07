@@ -104,7 +104,7 @@ def run_over_all_url_properties_from_csv():
         all_urls = [line.strip() for line in file if line.strip()]
     print(len(all_urls))
 
-    properties = all_properties_info(all_urls[3740:7480])
+    properties = all_properties_info(all_urls)
     print(len(properties))
 
 run_over_all_url_properties_from_csv()
