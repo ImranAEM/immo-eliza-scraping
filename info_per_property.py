@@ -58,13 +58,13 @@ def all_properties_info(property_urls: list[str]) -> list[dict]:
         if re.search(r"project", property_url): 
             pass
         else:
-            info = get_info(get_soup(property_url))
-            cleaned_info = clean_property_data_output(info)
-            if cleaned_info is not None:
+            info = get_info(get_soup(property_url))      
+            if info is not None:
+                cleaned_info = clean_property_data_output(info)
                 all_properties_info.append(cleaned_info)
                 to_csv(cleaned_info)
             else:
-                print(f"Error : {cleaned_info} in url {property_url}")
+                print(f"Error in url {property_url}")
     return all_properties_info
 
 def to_csv_titles():
