@@ -8,6 +8,9 @@ import csv
 
 from check_convert_data import clean_property_data_output
 def get_soup(url:str) -> tuple[BeautifulSoup,str]:
+    """
+    Gets the soup of a property's page and the json string of the meta data.
+    """
     # initiate driver and getting the page
     driver = webdriver.Firefox()
     driver.get(url) # opening the property's page
@@ -28,6 +31,9 @@ def get_soup(url:str) -> tuple[BeautifulSoup,str]:
     return soup, json_string
 
 def get_info(my_tuple : tuple[BeautifulSoup, str]) -> dict:
+    """
+    Gets the information of a property from the soup and the json string.
+    """
     soup = my_tuple[0]
     try:
         json_info = json.loads(my_tuple[1])
@@ -51,6 +57,9 @@ def get_info(my_tuple : tuple[BeautifulSoup, str]) -> dict:
     return property_info
 
 def all_properties_info(property_urls: list[str]) -> list[dict]:
+    """
+    Gets the information of all properties from the list of property URLs.
+    """
     all_properties_info = list[dict]()
     to_csv_titles() # write the titles to the csv file
     for property_url in property_urls:
@@ -68,6 +77,9 @@ def all_properties_info(property_urls: list[str]) -> list[dict]:
     return all_properties_info
 
 def to_csv_titles():
+    """
+    Writes the titles to the csv file.
+    """
     titles = [
         "Property ID",
         "Locality name",
@@ -92,12 +104,18 @@ def to_csv_titles():
         output.writerow(titles)
 
 def to_csv(to_write: dict):   
+    """
+    Writes the information of a property to the csv file.
+    """
     with open("data.csv", "a",encoding='utf-8', newline='') as f:
         output = csv.writer(f)
         output.writerow(to_write.values())
 
 
 def run_over_all_url_properties_from_csv():
+    """
+    Runs over all url properties from the csv file.
+    """
     all_urls = []
    
     with open('url_list.txt', 'r') as file:
